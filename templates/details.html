@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ item.name }} - PetZone{% endblock %}
+
+{% block content %}
+<section style="padding: 100px 0; background: linear-gradient(135deg, rgba(234, 219, 200, 0.2) 0%, #fff 100%);">
+    <div class="container">
+        <div class="glass" style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; padding: 60px; border-radius: 40px; align-items: start;">
+            
+            <!-- Item Image -->
+            <div style="position: sticky; top: 120px;">
+                <div class="glass" style="border-radius: 30px; overflow: hidden; box-shadow: var(--shadow-lg); transition: transform 0.3s ease;">
+                    <img src="{{ url_for('static', filename='images/' + item.image) if item.image else url_for('static', filename='images/placeholder.png') }}" 
+                         alt="{{ item.name }}" 
+                         style="width: 100%; height: auto; display: block; object-fit: cover;">
+                </div>
+            </div>
+
+            <!-- Item Info -->
+            <div style="padding: 20px;">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <span style="background: var(--primary); color: #fff; padding: 8px 18px; border-radius: 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
+                        {{ item_type|capitalize }}
+                    </span>
+                    <span style="background: rgba(0,0,0,0.05); color: #444; padding: 8px 18px; border-radius: 30px; font-size: 0.9rem; font-weight: 600;">
+                        {{ item.category }}
+                    </span>
+                </div>
+
+                <h1 style="font-size: 3.5rem; margin-bottom: 20px; line-height: 1.1;">{{ item.name }}</h1>
+                
+                <div style="font-size: 2.2rem; font-weight: 800; color: var(--primary); margin-bottom: 30px;">
+                    {{ item.price|currency }}
+                </div>
+
+                <div style="background: rgba(255,255,255,0.4); padding: 30px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.05); margin-bottom: 40px;">
+                    <h4 style="margin-bottom: 15px; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; color: #888;">Description</h4>
+                    <p style="color: #444; line-height: 1.8; font-size: 1.1rem;">
+                        {{ item.description or "Premium quality selection for your beloved pet. Handpicked for comfort, safety, and happiness." }}
+                    </p>
+                </div>
+
+                <!-- Action Section -->
+                <div style="display: flex; gap: 20px; align-items: center;">
+                    <form action="{{ url_for('add_to_cart') }}" method="POST" style="flex: 1;">
+                        <input type="hidden" name="id" value="{{ item.id }}">
+                        <input type="hidden" name="name" value="{{ item.name }}">
+                        <input type="hidden" name="price" value="{{ item.price }}">
+                        <input type="hidden" name="image" value="{{ item.image }}">
+                        <input type="hidden" name="type" value="{{ item_type }}">
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 20px; border-radius: 15px; font-size: 1.2rem; font-weight: 700; box-shadow: 0 10px 20px rgba(122, 178, 177, 0.3);">
+                            {% if item_type == 'pet' %}Adopt {{ item.name }} Now{% else %}Add to Shopping Cart{% endif %}
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Features/Badges -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 50px;">
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 15px; background: rgba(255,255,255,0.4); border-radius: 15px;">
+                        <span style="font-size: 1.5rem;">🚚</span>
+                        <span style="font-size: 0.9rem; font-weight: 600;">Fast PAN-India Delivery</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 15px; background: rgba(255,255,255,0.4); border-radius: 15px;">
+                        <span style="font-size: 1.5rem;">🛡️</span>
+                        <span style="font-size: 0.9rem; font-weight: 600;">100% Secure Checkout</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

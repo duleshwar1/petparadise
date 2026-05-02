@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us - PetParadise{% endblock %}
+
+{% block content %}
+<section style="background: var(--secondary); padding: 80px 0;">
+    <div class="container text-center" style="max-width: 800px;">
+        <h1 style="font-size: 3.5rem;">Our Story 🐾</h1>
+        <p style="font-size: 1.2rem; color: #666;">PetParadise was born from a simple belief: every animal deserves a chance to be loved.</p>
+    </div>
+</section>
+
+<section>
+    <div class="container" style="display: flex; gap: 80px; align-items: center;">
+        <div style="flex: 1;">
+            <img src="{{ url_for('static', filename='images/dog1.png') }}" style="width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow);">
+        </div>
+        <div style="flex: 1.2;">
+            <h2>Founded for the Furry 🐶</h2>
+            <p style="font-size: 1.1rem; color: #555;">Started in 2020 by a group of passionate veterinarians and animal lovers, PetParadise has grown from a small local shelter to a comprehensive destination for pet adoption and premium supplies.</p>
+            <br>
+            <p style="font-size: 1.1rem; color: #555;">We don't just sell products; we build families. Every pet in our care is treated with the utmost respect, provided with top-tier nutrition, and vetted by experts to ensure they find the perfect match.</p>
+            <br>
+            <h3>Our Core Values:</h3>
+            <ul style="margin-left: 20px; margin-top: 15px; color: #555; font-size: 1.1rem;">
+                <li><strong>Compassion First:</strong> The well-being of animals is our top priority.</li>
+                <li><strong>Quality Guaranteed:</strong> Only the best nutrition and safest toys.</li>
+                <li><strong>Transparency:</strong> Full health histories for all adoptable pets.</li>
+                <li><strong>Community Focused:</strong> Supporting local shelters and rescue groups.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section style="background: var(--bg);">
+    <div class="container">
+        <h2 class="text-center">Meet Our Mission</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 50px;">
+            <div class="card text-center" style="padding: 40px;">
+                <span style="font-size: 3rem;">🎁</span>
+                <h3 style="margin: 20px 0;">Premium Selection</h3>
+                <p style="color: #777;">Curated supplies that ensure your pet live their best, healthiest life.</p>
+            </div>
+            <div class="card text-center" style="padding: 40px;">
+                <span style="font-size: 3rem;">🏠</span>
+                <h3 style="margin: 20px 0;">Happy Homes</h3>
+                <p style="color: #777;">A seamless adoption process designed to create lifelong bonds.</p>
+            </div>
+            <div class="card text-center" style="padding: 40px;">
+                <span style="font-size: 3rem;">👨‍⚕️</span>
+                <h3 style="margin: 20px 0;">Expert Care</h3>
+                <p style="color: #777;">Professional advice from veterinarians and pet behaviorists.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

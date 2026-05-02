@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PetParadise - Premium Pet Store{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Standard Meta Tags -->
+    <meta name="description" content="PetParadise - Your ultimate destination for premium pets and pet supplies. Adopt a furry friend today!">
+    <!-- Favicon would go here -->
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="glass" style="border: none; border-bottom: 1px solid rgba(255,255,255,0.2); border-radius: 0;">
+        <div class="container nav-content">
+            <a href="{{ url_for('index') }}" class="logo">🐾 Pet<span style="color: var(--accent);">Zone</span></a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('pets') }}">Pets</a></li>
+                <li><a href="{{ url_for('products') }}">Products</a></li>
+                <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                {% if session.user_id %}
+                    <li><a href="{{ url_for('cart') }}" style="background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 10px;">🛒 {{ session.cart|length }}</a></li>
+                    {% if session.role == 'admin' %}
+                        <li><a href="{{ url_for('admin_dashboard') }}" style="color: var(--accent); font-weight: 700;">Admin</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('logout') }}" class="btn glass" style="padding: 10px 20px; color: #f44336; border: 1px solid rgba(244, 67, 54, 0.3);">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('signup') }}" class="btn btn-primary" style="padding: 10px 25px; border-radius: 12px;">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3>PetParadise</h3>
+                    <p>Creating a world where every pet finds a loving home. Premium supplies for your furry family.</p>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('pets') }}">Adopt a Pet</a></li>
+                        <li><a href="{{ url_for('products') }}">Shop Products</a></li>
+                        <li><a href="{{ url_for('about') }}">Our Story</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+                        <li><a href="#">Shipping & Returns</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Follow Us</h4>
+                    <p>Stay updated with our latest furry arrivals!</p>
+                    <!-- Social links would go here -->
+                </div>
+            </div>
+            <hr style="opacity: 0.1; margin: 40px 0;">
+            <p class="text-center" style="color: #888;">&copy; 2026 PetParadise. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

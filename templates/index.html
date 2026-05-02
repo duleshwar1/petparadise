@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - PetParadise{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container hero-grid">
+        <div class="hero-text glass">
+            <h1 style="font-size: 3.8rem; line-height: 1.1; margin-bottom: 20px;">Your Pet's <span style="color: var(--primary);">Paradise</span> Awaits! 🏡</h1>
+            <p style="font-size: 1.3rem; color: #444; margin-bottom: 40px; font-weight: 400;">Discover a curated collection of adorable pets and premium supplies. We bring love and care to your doorstep with every adoption.</p>
+            <div style="display: flex; gap: 20px;">
+                <a href="{{ url_for('pets') }}" class="btn btn-primary" style="font-size: 1.1rem; padding: 18px 45px;">Adopt a Pet</a>
+                <a href="{{ url_for('products') }}" class="btn glass" style="font-size: 1.1rem; padding: 18px 45px; border: 2px solid var(--primary); color: var(--primary);">Shop Supplies</a>
+            </div>
+        </div>
+        <div class="hero-img-container">
+            <img src="{{ url_for('static', filename='images/dog1.png') }}" alt="Cute Golden Retriever" class="hero-image">
+        </div>
+    </div>
+</section>
+
+<!-- Featured Pets -->
+<section style="background: #fff;">
+    <div class="container">
+        <h2 class="text-center">Meet Our Furry Friends 🐾</h2>
+        <p class="text-center" style="margin-bottom: 50px; color: #777;">Adorable pets waiting for their forever homes.</p>
+        
+        <div class="card-grid">
+            {% for pet in featured_pets %}
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/' + pet.image) if pet.image else url_for('static', filename='images/placeholder.png') }}" alt="{{ pet.name }}">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="background: var(--secondary); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">{{ pet.category }}</span>
+                    <span class="card-price">{{ pet.price|currency }}</span>
+                </div>
+                <h3 class="card-title">{{ pet.name }}</h3>
+                <p style="color: #888; font-size: 0.9rem; margin-bottom: 20px; min-height: 50px;">{{ pet.description|truncate(80) }}</p>
+                <form action="{{ url_for('add_to_cart') }}" method="POST">
+                    <input type="hidden" name="id" value="{{ pet.id }}">
+                    <input type="hidden" name="name" value="{{ pet.name }}">
+                    <input type="hidden" name="price" value="{{ pet.price }}">
+                    <input type="hidden" name="image" value="{{ pet.image }}">
+                    <input type="hidden" name="type" value="pet">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center" style="margin-top: 40px;">
+            <a href="{{ url_for('pets') }}" style="color: var(--primary); font-weight: 600; text-decoration: none;">View All Pets →</a>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section style="background: linear-gradient(135deg, rgba(234, 219, 200, 0.2) 0%, #fff 100%);">
+    <div class="container">
+        <h2 class="text-center" style="font-size: 2.5rem; margin-bottom: 50px;">Browse Collections</h2>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin-top: 40px;">
+            <a href="{{ url_for('pets', category='Dogs') }}" style="text-decoration: none;">
+                <div class="card glass text-center" style="padding: 50px 30px; transition: transform 0.4s ease; border: 1px solid rgba(255,255,255,0.4);">
+                    <div style="font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));">🐕</div>
+                    <h3 style="font-size: 1.5rem;">Happy Dogs</h3>
+                    <p style="color: #666; font-size: 0.9rem; margin-top: 10px;">Faithful companions awaiting you.</p>
+                </div>
+            </a>
+            <a href="{{ url_for('pets', category='Cats') }}" style="text-decoration: none;">
+                <div class="card glass text-center" style="padding: 50px 30px; transition: transform 0.4s ease; border: 1px solid rgba(255,255,255,0.4);">
+                    <div style="font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));">🐈</div>
+                    <h3 style="font-size: 1.5rem;">Graceful Cats</h3>
+                    <p style="color: #666; font-size: 0.9rem; margin-top: 10px;">Elegant friends for your home.</p>
+                </div>
+            </a>
+            <a href="{{ url_for('pets', category='Birds') }}" style="text-decoration: none;">
+                <div class="card glass text-center" style="padding: 50px 30px; transition: transform 0.4s ease; border: 1px solid rgba(255,255,255,0.4);">
+                    <div style="font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));">🦜</div>
+                    <h3 style="font-size: 1.5rem;">Vibrant Birds</h3>
+                    <p style="color: #666; font-size: 0.9rem; margin-top: 10px;">Colorful voices to brighten your day.</p>
+                </div>
+            </a>
+            <a href="{{ url_for('pets', category='Fish') }}" style="text-decoration: none;">
+                <div class="card glass text-center" style="padding: 50px 30px; transition: transform 0.4s ease; border: 1px solid rgba(255,255,255,0.4);">
+                    <div style="font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));">🐠</div>
+                    <h3 style="font-size: 1.5rem;">Serene Fish</h3>
+                    <p style="color: #666; font-size: 0.9rem; margin-top: 10px;">Calming beauty for your aquarium.</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+<section style="background: #fff;">
+    <div class="container">
+        <h2 class="text-center">Essential Supplies 🦴</h2>
+        <p class="text-center" style="margin-bottom: 50px; color: #777;">Only the best for your pet's well-being.</p>
+        
+        <div class="card-grid">
+            {% for product in featured_products %}
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/' + product.image) if product.image else url_for('static', filename='images/placeholder.png') }}" alt="{{ product.name }}">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="background: var(--secondary); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">{{ product.category }}</span>
+                    <span class="card-price">{{ product.price|currency }}</span>
+                </div>
+                <h3 class="card-title">{{ product.name }}</h3>
+                <form action="{{ url_for('add_to_cart') }}" method="POST">
+                    <input type="hidden" name="id" value="{{ product.id }}">
+                    <input type="hidden" name="name" value="{{ product.name }}">
+                    <input type="hidden" name="price" value="{{ product.price }}">
+                    <input type="hidden" name="image" value="{{ product.image }}">
+                    <input type="hidden" name="type" value="product">
+                    <button type="submit" class="btn btn-accent" style="width: 100%;">Add to Cart</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center" style="margin-top: 40px;">
+            <a href="{{ url_for('products') }}" style="color: var(--accent); font-weight: 600; text-decoration: none;">View All Products →</a>
+        </div>
+    </div>
+</section>
+
+<!-- About Preview -->
+<section style="background: var(--bg); position: relative; overflow: hidden;">
+    <div class="container" style="display: flex; align-items: center; gap: 60px;">
+        <div style="flex: 1;">
+            <h2>About PetParadise 🦴</h2>
+            <p>Founded with a passion for animals, PetParadise has grown from a small local shop to a leading destination for pet lovers. We believe every pet deserves a healthy, happy life filled with love.</p>
+            <br>
+            <p>Our mission is to provide premium products, expert advice, and a platform for pet adoption that connects animals with their perfect families.</p>
+            <br>
+            <a href="{{ url_for('about') }}" class="btn btn-primary">Read Our Story</a>
+        </div>
+        <div style="flex: 1; position: relative;">
+             <!-- Decorative elements could go here -->
+             <div style="background: var(--primary); height: 400px; width: 400px; border-radius: 50%; opacity: 0.1; position: absolute; top: -50px; right: -50px;"></div>
+             <img src="{{ url_for('static', filename='images/cat1.png') }}" alt="Cute Cat" style="width: 100%; border-radius: var(--radius-lg); position: relative; z-index: 1;">
+        </div>
+    </div>
+</section>
+{% endblock %}

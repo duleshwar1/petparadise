@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Success - PetParadise{% endblock %}
+
+{% block content %}
+<section>
+    <div class="container text-center" style="max-width: 600px;">
+        <span style="font-size: 5rem;">🎉</span>
+        <h1 style="color: var(--primary);">Success! Order Placed!</h1>
+        <p style="font-size: 1.2rem; color: #666; margin-bottom: 40px;">Thank you for your order! Your order ID is <strong>#PP-{{ order_id }}</strong>. We are preparing it for shipment and will notify you soon.</p>
+        
+        <div style="background: var(--white); padding: 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow); text-align: left;">
+            <h3>Next Steps:</h3>
+            <ul style="margin-top: 20px; color: #555;">
+                <li>Check your email for order confirmation.</li>
+                <li>Track your shipment once it's dispatched.</li>
+                <li>Prepare a warm welcome for your new furry friend!</li>
+            </ul>
+        </div>
+        
+        <br><br>
+        <a href="{{ url_for('index') }}" class="btn btn-primary" style="padding: 15px 40px;">Back to Home</a>
+    </div>
+</section>
+{% endblock %}

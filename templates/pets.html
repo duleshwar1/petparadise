@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Pets - PetParadise{% endblock %}
+
+{% block content %}
+<section style="background: linear-gradient(135deg, var(--secondary) 0%, #fff 100%); padding: 80px 0;">
+    <div class="container text-center">
+        <div class="glass" style="padding: 40px; display: inline-block; width: 100%; max-width: 800px;">
+            <h1 style="font-size: 3.5rem; margin-bottom: 10px;">Adoption Center 🐕</h1>
+            <p style="font-size: 1.3rem; color: #555;">Find your furry soulmate today. Each pet is waiting for a loving home.</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <!-- Category Filters -->
+        <div style="display: flex; gap: 15px; margin-bottom: 40px; justify-content: center; flex-wrap: wrap;">
+            <a href="{{ url_for('pets') }}"
+                class="btn {% if not current_category %}btn-primary{% else %}btn-secondary{% endif %}"
+                style="background: {% if not current_category %}var(--primary){% else %}#eee{% endif %}; color: {% if not current_category %}#fff{% else %}#555{% endif %};">All
+                Pets</a>
+            <a href="{{ url_for('pets', category='Dogs') }}" class="btn {% if current_category == 'Dogs' %}btn-primary{% else %}btn-secondary{% endif %}" style="background: {% if current_category == 'Dogs' %}var(--primary){% else %}#eee{% endif %}; color: {% if current_category == 'Dogs' %}#fff{% else %}#555{% endif %};">Dogs</a>
+            <a href="{{ url_for('pets', category='Cats') }}" class="btn {% if current_category == 'Cats' %}btn-primary{% else %}btn-secondary{% endif %}" style="background: {% if current_category == 'Cats' %}var(--primary){% else %}#eee{% endif %}; color: {% if current_category == 'Cats' %}#fff{% else %}#555{% endif %};">Cats</a>
+            <a href="{{ url_for('pets', category='Birds') }}" class="btn {% if current_category == 'Birds' %}btn-primary{% else %}btn-secondary{% endif %}" style="background: {% if current_category == 'Birds' %}var(--primary){% else %}#eee{% endif %}; color: {% if current_category == 'Birds' %}#fff{% else %}#555{% endif %};">Birds</a>
+            <a href="{{ url_for('pets', category='Fish') }}"
+                class="btn {% if current_category == 'Fish' %}btn-primary{% else %}btn-secondary{% endif %}"
+                style="background: {% if current_category == 'Fish' %}var(--primary){% else %}#eee{% endif %}; color: {% if current_category == 'Fish' %}#fff{% else %}#555{% endif %};">Fish</a>
+        </div>
+
+        {% if pets %}
+        <div class="card-grid">
+            {% for pet in pets %}
+            <div class="card glass" style="position: relative; overflow: hidden; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                <a href="{{ url_for('product_details', id=pet.id) }}" style="text-decoration: none; color: inherit; display: block;">
+                    <img src="{{ url_for('static', filename='images/' + pet.image) if pet.image else url_for('static', filename='images/placeholder.png') }}" alt="{{ pet.name }}" style="border-radius: 20px 20px 0 0; transition: transform 0.5s ease;">
+                    <div style="padding: 25px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <span style="background: var(--primary); color: #fff; padding: 6px 16px; border-radius: 30px; font-size: 0.85rem; font-weight: 600;">{{ pet.category }}</span>
+                            <span class="card-price" style="font-size: 1.2rem; font-weight: 800; color: var(--primary);">{{ pet.price|currency }}</span>
+                        </div>
+                        <h3 class="card-title" style="font-size: 1.6rem; margin-bottom: 15px;">{{ pet.name }}</h3>
+                        <p style="color: #666; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.6;">{{ pet.description }}</p>
+                    </div>
+                </a>
+                <form action="{{ url_for('add_to_cart') }}" method="POST">
+                    <input type="hidden" name="id" value="{{ pet.id }}">
+                    <input type="hidden" name="name" value="{{ pet.name }}">
+                    <input type="hidden" name="price" value="{{ pet.price }}">
+                    <input type="hidden" name="image" value="{{ pet.image }}">
+                    <input type="hidden" name="type" value="pet">
+                    <button type="submit" class="btn btn-primary" style="width: 100%; border-radius: 12px; padding: 15px;">Adopt {{ pet.name }}</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center" style="padding: 100px 0;">
+            <span style="font-size: 4rem;">🐾</span>
+            <h3>No pets found in this category.</h3>
+            <p>Please check back later or browse other categories.</p>
+            <br>
+            <a href="{{ url_for('pets') }}" class="btn btn-primary">Back to All Pets</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

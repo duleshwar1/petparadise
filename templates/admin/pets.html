@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Pet Management - PetParadise{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <!-- Sidebar -->
+    <div class="admin-sidebar glass" style="margin: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2);">
+        <h2 style="font-size: 1.5rem; margin-bottom: 40px; color: var(--primary);">🐾 Pet<span style="color: var(--accent);">Zone</span></h2>
+        <ul style="list-style: none; margin-top: 30px;">
+            <li style="margin-bottom: 25px;">
+                <a href="{{ url_for('admin_dashboard') }}" style="color: var(--text); font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.2rem;">📊</span> Dashboard
+                </a>
+            </li>
+            <li style="margin-bottom: 25px;">
+                <a href="{{ url_for('admin_pets') }}" style="color: var(--primary); font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.2rem;">🐕</span> Manage Pets
+                </a>
+            </li>
+            <li style="margin-bottom: 25px;">
+                <a href="{{ url_for('admin_products') }}" style="color: var(--text); font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.2rem;">📦</span> Manage Products
+                </a>
+            </li>
+            <li style="margin-top: 40px;">
+                <a href="{{ url_for('logout') }}" class="btn glass" style="color: #f44336; border: 1px solid rgba(244, 67, 54, 0.2); width: 100%; text-align: left;">🚪 Logout</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+            <h1>Manage Furry Friends 🐕</h1>
+            <!-- Trigger Add Modal (Simulated here) -->
+            <a href="#add-pet-form" class="btn btn-primary">+ Add New Pet</a>
+        </div>
+
+        <!-- Add Pet Form -->
+        <div id="add-pet-form" style="background: var(--white); padding: 30px; border-radius: var(--radius-lg); box-shadow: var(--shadow); margin-bottom: 40px;">
+            <h3>Add New Pet</h3>
+            <form action="{{ url_for('admin_pets') }}" method="POST" enctype="multipart/form-data" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <label>Pet Name</label>
+                    <input type="text" name="name" placeholder="Buddy" required>
+                    
+                    <label>Price</label>
+                    <input type="number" step="0.01" name="price" placeholder="450.00" required>
+                    
+                    <label>Category</label>
+                    <select name="category" required>
+                        <option value="Dogs">Dogs</option>
+                        <option value="Cats">Cats</option>
+                        <option value="Birds">Birds</option>
+                        <option value="Fish">Fish</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Description</label>
+                    <textarea name="description" rows="5" placeholder="Tell us about the pet..." required></textarea>
+                    
+                    <label>Pet Image</label>
+                    <input type="file" name="image" required>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Save Pet</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Pets Table -->
+        <div style="margin-top: 20px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pet in pets %}
+                    <tr>
+                        <td>
+                            <img src="{{ url_for('static', filename='images/' + pet.image) if pet.image else url_for('static', filename='images/placeholder.png') }}" style="width: 40px; height: 40px; border-radius: 8px;">
+                        </td>
+                        <td>{{ pet.name }}</td>
+                        <td>{{ pet.category }}</td>
+                        <td>{{ pet.price|currency }}</td>
+                        <td>
+                            <a href="{{ url_for('delete_pet', id=pet.id) }}" style="color: #f44336; text-decoration: none;" onclick="return confirm('Are you sure?')">🗑️ Delete</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">No pets in database. Add some!</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout - PetParadise{% endblock %}
+
+{% block content %}
+<section>
+    <div class="container" style="max-width: 1000px;">
+        <h1 class="text-center">Complete Your Order 🛍️</h1>
+        
+        <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; margin-top: 40px;">
+            <!-- Shipping Form -->
+            <div class="form-container" style="margin: 0; width: 100%; max-width: 100%;">
+                <h3>Shipping Details</h3>
+                <form action="{{ url_for('checkout') }}" method="POST">
+                    <label>Full Name</label>
+                    <input type="text" name="name" placeholder="Rahul Sharma" required>
+                    
+                    <label>Mobile Number</label>
+                    <input type="text" name="phone" placeholder="9876543210" required>
+                    
+                    <label>House No & Street</label>
+                    <input type="text" name="house_no" placeholder="H.No 45, MP Nagar" required>
+
+                    <label>Area / Locality</label>
+                    <input type="text" name="address" placeholder="Zone 2" required>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label>City</label>
+                            <input type="text" name="city" placeholder="Bhopal" required>
+                        </div>
+                        <div>
+                            <label>State</label>
+                            <input type="text" name="state" placeholder="Madhya Pradesh" required>
+                        </div>
+                    </div>
+
+                    <label>Pincode</label>
+                    <input type="text" name="pincode" placeholder="462011" required>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; margin-top: 10px;">Place Order ({{ total|currency }})</button>
+                </form>
+            </div>
+            
+            <!-- Order Summary -->
+            <div>
+                <div style="background: var(--white); padding: 30px; border-radius: var(--radius-lg); box-shadow: var(--shadow);">
+                    <h3>Order Summary</h3>
+                    <div style="margin-top: 20px;">
+                        {% for item in session.cart %}
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>{{ item.name }} (x{{ item.quantity }})</span>
+                            <span>{{ (item.price * item.quantity)|currency }}</span>
+                        </div>
+                        {% endfor %}
+                        <hr style="opacity: 0.1; margin: 20px 0;">
+                        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.2rem;">
+                            <span>Total</span>
+                            <span style="color: var(--primary);">{{ total|currency }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px; padding: 20px; background: #E0F0F0; border-radius: 12px;">
+                    <p style="font-size: 0.9rem; color: #555;">🔒 Your payment is secure and processed through our encrypted gateway.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

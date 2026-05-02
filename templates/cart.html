@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}My Cart - PetParadise{% endblock %}
+
+{% block content %}
+<section>
+    <div class="container" style="max-width: 900px;">
+        <h1 class="text-center">Your Shopping Cart 🛒</h1>
+        
+        {% if cart_items %}
+            <div class="glass" style="padding: 40px; margin-top: 40px;">
+                <table style="width: 100%; border-collapse: separate; border-spacing: 0 15px; background: transparent; box-shadow: none;">
+                    <thead>
+                        <tr>
+                            <th style="background: transparent; border: none;">Item</th>
+                            <th style="background: transparent; border: none;">Price</th>
+                            <th style="background: transparent; border: none;">Quantity</th>
+                            <th style="background: transparent; border: none;">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                        <tr class="glass" style="border-radius: 12px; margin-bottom: 10px;">
+                            <td style="border: none; border-radius: 12px 0 0 12px; padding: 15px;">
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    <img src="{{ url_for('static', filename='images/' + item.image) if item.image else url_for('static', filename='images/placeholder.png') }}" style="width: 80px; height: 80px; border-radius: 15px; object-fit: cover;">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 1.1rem;">{{ item.name }}</h4>
+                                        <small style="color: #666; text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem; font-weight: 600;">{{ item.type }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="border: none; padding: 15px;">{{ item.price|currency }}</td>
+                            <td style="border: none; padding: 15px;">
+                                <div style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.4); padding: 8px 15px; border-radius: 10px; width: fit-content;">
+                                    <form action="{{ url_for('update_cart') }}" method="POST" style="margin: 0;">
+                                        <input type="hidden" name="id" value="{{ item.id }}">
+                                        <input type="hidden" name="type" value="{{ item.type }}">
+                                        <input type="hidden" name="action" value="decrease">
+                                        <button type="submit" class="btn" style="padding: 0; background: transparent; font-size: 1.2rem; color: #555;">-</button>
+                                    </form>
+                                    <span style="font-weight: 600; min-width: 20px; text-align: center;">{{ item.quantity }}</span>
+                                    <form action="{{ url_for('update_cart') }}" method="POST" style="margin: 0;">
+                                        <input type="hidden" name="id" value="{{ item.id }}">
+                                        <input type="hidden" name="type" value="{{ item.type }}">
+                                        <input type="hidden" name="action" value="increase">
+                                        <button type="submit" class="btn" style="padding: 0; background: transparent; font-size: 1.2rem; color: #555;">+</button>
+                                    </form>
+                                </div>
+                            </td>
+                            <td style="border: none; border-radius: 0 12px 12px 0; padding: 15px; font-weight: 700; color: var(--primary);">{{ (item.price * item.quantity)|currency }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <div style="display: flex; justify-content: flex-end; margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(0,0,0,0.05);">
+                    <div style="text-align: right;">
+                        <h2 style="margin-bottom: 30px; font-size: 2rem;">Total: <span style="color: var(--primary);">{{ total|currency }}</span></h2>
+                        <div style="display: flex; gap: 20px; justify-content: flex-end;">
+                            <a href="{{ url_for('index') }}" class="btn glass" style="padding: 15px 30px;">Continue Shopping</a>
+                            <a href="{{ url_for('checkout') }}" class="btn btn-primary" style="padding: 15px 40px; border-radius: 12px;">Checkout Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="text-center" style="padding: 80px 0;">
+                <span style="font-size: 5rem;">🛒</span>
+                <h2>Your cart is empty!</h2>
+                <p>Looks like you haven't added anything to your cart yet.</p>
+                <br>
+                <a href="{{ url_for('index') }}" class="btn btn-primary">Go to Home</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

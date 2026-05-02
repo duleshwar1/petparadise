@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact - PetParadise{% endblock %}
+
+{% block content %}
+<section style="background: var(--bg); padding: 80px 0;">
+    <div class="container" style="max-width: 800px;">
+        <h1 class="text-center">Get in Touch 📩</h1>
+        <p class="text-center" style="margin-bottom: 60px; color: #777; font-size: 1.1rem;">Have questions about adoption or our products? Our team of pet experts is here to help you.</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+            <!-- Contact Info -->
+            <div>
+                <h3>Our Location</h3>
+                <p style="color: #666; margin-bottom: 20px;">123 Paradise Lane, Suite 101<br>New York, NY 10001</p>
+                
+                <h3>Call Us</h3>
+                <p style="color: #666; margin-bottom: 20px;">+1 (555) PET-Z-ONE</p>
+                
+                <h3>Email Support</h3>
+                <p style="color: #666; margin-bottom: 20px;">hello@petparadise.com</p>
+                
+                <h3>Support Hours</h3>
+                <p style="color: #666;">Mon - Fri: 9:00 AM - 6:00 PM<br>Sat - Sun: 10:00 AM - 4:00 PM</p>
+            </div>
+            
+            <!-- Contact Form -->
+            <div class="form-container" style="margin: 0; width: 100%; max-width: 100%;">
+                <form action="{{ url_for('contact') }}" method="POST">
+                    <label>Full Name</label>
+                    <input type="text" name="name" placeholder="John Doe" required>
+                    
+                    <label>Email Address</label>
+                    <input type="email" name="email" placeholder="john@example.com" required>
+                    
+                    <label>Message</label>
+                    <textarea name="message" rows="5" placeholder="How can we help?" required></textarea>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

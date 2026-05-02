@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - PetParadise{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <!-- Sidebar -->
+    <div class="admin-sidebar glass" style="margin: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2);">
+        <h2 style="font-size: 1.5rem; margin-bottom: 40px; color: var(--primary);">🐾 Pet<span style="color: var(--accent);">Zone</span></h2>
+        <ul style="list-style: none; margin-top: 30px;">
+            <li style="margin-bottom: 25px;">
+                <a href="{{ url_for('admin_dashboard') }}" style="color: var(--primary); font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.2rem;">📊</span> Dashboard
+                </a>
+            </li>
+            <li style="margin-bottom: 25px;">
+                <a href="{{ url_for('admin_pets') }}" style="color: var(--text); font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.2rem;">🐕</span> Manage Pets
+                </a>
+            </li>
+            <li style="margin-bottom: 25px;">
+                <a href="#" style="color: var(--text); font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.2rem;">📦</span> Products
+                </a>
+            </li>
+            <li style="margin-top: 40px;">
+                <a href="{{ url_for('logout') }}" class="btn glass" style="color: #f44336; border: 1px solid rgba(244, 67, 54, 0.2); width: 100%; text-align: left;">🚪 Logout</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-content">
+        <h1>Dashboard Overview 📊</h1>
+        <p style="color: #777; margin-bottom: 40px;">Welcome to the PetParadise Admin Center. Monitor your store's performance here.</p>
+
+        <!-- Stats -->
+        <div class="stat-grid">
+            <div class="stat-card glass" style="border: 1px solid rgba(255,255,255,0.4);">
+                <p style="color: #666; font-weight: 600;">Total Users</p>
+                <div class="stat-number">{{ total_users }}</div>
+            </div>
+            <div class="stat-card glass" style="border: 1px solid rgba(255,255,255,0.4);">
+                <p style="color: #666; font-weight: 600;">Total Pets</p>
+                <div class="stat-number">{{ total_pets }}</div>
+            </div>
+            <div class="stat-card glass" style="border: 1px solid rgba(255,255,255,0.4);">
+                <p style="color: #666; font-weight: 600;">Total Products</p>
+                <div class="stat-number">{{ total_products }}</div>
+            </div>
+            <div class="stat-card glass" style="border: 1px solid rgba(255,255,255,0.4);">
+                <p style="color: #666; font-weight: 600;">Total Orders</p>
+                <div class="stat-number">{{ total_orders }}</div>
+            </div>
+        </div>
+
+        <!-- Orders Table -->
+        <h3>Recent Orders 🛍️</h3>
+        <div style="margin-top: 20px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>#PP-{{ order.id }}</td>
+                        <td>{{ order.user_name }}</td>
+                        <td>{{ order.total_price|currency }}</td>
+                        <td>
+                            <span style="padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; background: {% if order.status == 'Completed' %}#4CAF50{% elif order.status == 'Pending' %}#FF9800{% else %}#f44336{% endif %}; color: #fff;">
+                                {{ order.status }}
+                            </span>
+                        </td>
+                        <td>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">No orders found yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

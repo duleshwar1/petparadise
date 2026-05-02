@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Shop - PetParadise{% endblock %}
+
+{% block content %}
+<section style="background: linear-gradient(135deg, var(--accent) 0%, #fff 100%); padding: 80px 0;">
+    <div class="container text-center">
+        <div class="glass" style="padding: 40px; display: inline-block; width: 100%; max-width: 800px;">
+            <h1 style="font-size: 3.5rem; margin-bottom: 10px;">Pet Supplies Shop 📦</h1>
+            <p style="font-size: 1.3rem; color: #555;">Premium food, toys, and accessories for your best friends.</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <!-- Category Filters -->
+        <div style="display: flex; gap: 15px; margin-bottom: 40px; justify-content: center; flex-wrap: wrap;">
+            <a href="{{ url_for('products') }}" class="btn {% if not current_category %}btn-accent{% else %}btn-secondary{% endif %}" style="background: {% if not current_category %}var(--accent){% else %}#eee{% endif %}; color: {% if not current_category %}#fff{% else %}#555{% endif %};">All Products</a>
+            <a href="{{ url_for('products', category='Food') }}" class="btn {% if current_category == 'Food' %}btn-accent{% else %}btn-secondary{% endif %}" style="background: {% if current_category == 'Food' %}var(--accent){% else %}#eee{% endif %}; color: {% if current_category == 'Food' %}#fff{% else %}#555{% endif %};">Food</a>
+            <a href="{{ url_for('products', category='Toys') }}" class="btn {% if current_category == 'Toys' %}btn-accent{% else %}btn-secondary{% endif %}" style="background: {% if current_category == 'Toys' %}var(--accent){% else %}#eee{% endif %}; color: {% if current_category == 'Toys' %}#fff{% else %}#555{% endif %};">Toys</a>
+            <a href="{{ url_for('products', category='Accessories') }}" class="btn {% if current_category == 'Accessories' %}btn-accent{% else %}btn-secondary{% endif %}" style="background: {% if current_category == 'Accessories' %}var(--accent){% else %}#eee{% endif %}; color: {% if current_category == 'Accessories' %}#fff{% else %}#555{% endif %};">Accessories</a>
+            <a href="{{ url_for('products', category='Grooming') }}" class="btn {% if current_category == 'Grooming' %}btn-accent{% else %}btn-secondary{% endif %}" style="background: {% if current_category == 'Grooming' %}var(--accent){% else %}#eee{% endif %}; color: {% if current_category == 'Grooming' %}#fff{% else %}#555{% endif %};">Grooming</a>
+        </div>
+
+        {% if products %}
+            <div class="card-grid">
+                {% for product in products %}
+                <div class="card glass" style="position: relative; overflow: hidden; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <a href="{{ url_for('product_details', id=product.id) }}" style="text-decoration: none; color: inherit; display: block;">
+                        <img src="{{ url_for('static', filename='images/' + product.image) if product.image else url_for('static', filename='images/placeholder.png') }}" alt="{{ product.name }}" style="border-radius: 20px 20px 0 0; transition: transform 0.5s ease;">
+                        <div style="padding: 25px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <span style="background: var(--accent); color: #fff; padding: 6px 16px; border-radius: 30px; font-size: 0.85rem; font-weight: 600;">{{ product.category }}</span>
+                                <span class="card-price" style="font-size: 1.2rem; font-weight: 800; color: var(--accent);">{{ product.price|currency }}</span>
+                            </div>
+                            <h3 class="card-title" style="font-size: 1.6rem; margin-bottom: 20px;">{{ product.name }}</h3>
+                        </div>
+                    </a>
+
+                    <form action="{{ url_for('add_to_cart') }}" method="POST">
+                        <input type="hidden" name="id" value="{{ product.id }}">
+                        <input type="hidden" name="name" value="{{ product.name }}">
+                        <input type="hidden" name="price" value="{{ product.price }}">
+                        <input type="hidden" name="image" value="{{ product.image }}">
+                        <input type="hidden" name="type" value="product">
+                        <button type="submit" class="btn btn-accent" style="width: 100%; border-radius: 12px; padding: 15px;">Add to Cart</button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center" style="padding: 100px 0;">
+                <span style="font-size: 4rem;">📦</span>
+                <h3>No products found.</h3>
+                <p>Please check back later or browse other categories.</p>
+                <br>
+                <a href="{{ url_for('products') }}" class="btn btn-accent">Back to All Products</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
